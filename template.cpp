@@ -1,3 +1,4 @@
+#include <vector>
 #pragma GCC optimize("O3")
 #pragma GCC optimize("unroll-loops")
 #pragma GCC target("avx2")
@@ -12,7 +13,25 @@ using namespace std;
 #endif
 
 #ifndef ONLINE_JUDGE
-INLINE void __print(bool x) {cerr << (x ? "true" : "false");}INLINE void __print(int x) {cerr << x;} INLINE void __print(long x) {cerr << x;} INLINE void __print(long long x) {cerr << x;} INLINE void __print(unsigned x) {cerr << x;} INLINE void __print(unsigned long x) {cerr << x;} INLINE void __print(unsigned long long x) {cerr << x;} INLINE void __print(float x) {cerr << x;} INLINE void __print(double x) {cerr << x;} INLINE void __print(long double x) {cerr << x;} INLINE void __print(char x) {cerr << '\'' << x << '\'';} INLINE void __print(const char *x) {cerr << '"' << x << '"';} INLINE void __print(const string &x) {cerr << '"' << x << '"';} template<typename T, typename V> INLINE void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ','; __print(x.second); cerr << '}';} template<typename T> INLINE void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? "," : ""), __print(i); cerr << "}";} INLINE void _print() {cerr << "]\n";} template <typename T, typename... V> INLINE void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
+INLINE void __print(bool x) {cerr << (x ? "true" : "false");}
+INLINE void __print(int x) {cerr << x;}
+INLINE void __print(long x) {cerr << x;}
+INLINE void __print(long long x) {cerr << x;}
+INLINE void __print(unsigned x) {cerr << x;}
+INLINE void __print(unsigned long x) {cerr << x;}
+INLINE void __print(unsigned long long x) {cerr << x;}
+INLINE void __print(float x) {cerr << x;}
+INLINE void __print(double x) {cerr << x;}
+INLINE void __print(long double x) {cerr << x;}
+INLINE void __print(char x) {cerr << '\'' << x << '\'';}
+INLINE void __print(const char *x) {cerr << '"' << x << '"';}
+INLINE void __print(const string &x) {cerr << '"' << x << '"';}
+template<typename T, typename V> INLINE void __print(const pair<T, V> &x);
+template<typename T> INLINE void __print(const T &x);
+template<typename T, typename V> INLINE void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ','; __print(x.second); cerr << '}';}
+template<typename T> INLINE void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? "," : ""), __print(i); cerr << "}";}
+INLINE void _print() {cerr << "]\n";}
+template <typename T, typename... V> INLINE void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
 #define D(x...) cerr << "[" << #x << "] = ["; _print(x);
 #else
 #define D(x...)
@@ -66,6 +85,8 @@ typedef priority_queue<ld, vld, greater<ld>> minpqld;
 #define SI(x, start, end, cond) auto x = start, e = end; while (x != e && !(cond)) ++x;
 #define IBS(x, start, end, cond) ll s = start, x = end; while (x - s > 1) { \
     ll mid = s + (x - s)/2; if (cond) x = mid; else s = mid; }
+
+#define CMA ,
 
 int main() {
     ios_base::sync_with_stdio(false);
