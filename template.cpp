@@ -37,25 +37,51 @@ template <typename T, typename... V> INLINE void _print(T t, V... v) {__print(t)
 #define D(x...)
 #endif
 
-typedef long long ll;
-typedef long double ld;
-typedef pair<ll, ll> pll;
-typedef pair<ld, ld> pld;
-typedef vector<ll> vll;
-typedef vector<ld> vld;
-typedef vector<vll> vvll;
-typedef vector<vld> vvld;
-typedef vector<pll> vpll;
-typedef vector<pld> vpld;
-typedef vector<vpll> vvpll;
-typedef vector<vpld> vvpld;
-typedef vector<string> vs;
-typedef vector<vs> vvs;
+using i8 = int8_t;
+using i16 = int16_t;
+using i32 = int32_t;
+using i64 = int64_t;
+using i128 = __int128;
 
-typedef priority_queue<ll, vll, less<ll>> maxpqll;
-typedef priority_queue<ld, vld, less<ld>> maxpqld;
-typedef priority_queue<ll, vll, greater<ll>> minpqll;
-typedef priority_queue<ld, vld, greater<ld>> minpqld;
+using u8 = uint8_t;
+using u16 = uint16_t;
+using u32 = uint32_t;
+using u64 = uint64_t;
+using u128 = unsigned __int128;
+
+using uchar = unsigned char;
+using schar = signed char;
+using ushort = unsigned short;
+using uint = unsigned int;
+using ulong = unsigned long;
+
+using ll = long long;
+using ull = unsigned long long;
+
+using f32 = float;
+using f64 = double;
+using f80 = long double;
+using ld = long double;
+
+using pll = pair<ll, ll>;
+using pld = pair<ld, ld>;
+using vll = vector<ll>;
+using vld = vector<ld>;
+using vvll = vector<vll>;
+using vvld = vector<vld>;
+using vpll = vector<pll>;
+using vpld = vector<pld>;
+using vvpll = vector<vpll>;
+using vvpld = vector<vpld>;
+using vs = vector<string>;
+using vvs = vector<vs>;
+
+template <typename T> using maxpq = priority_queue<T, vector<T>, less<T>>;
+template <typename T> using minpq = priority_queue<T, vector<T>, greater<T>>;
+using maxpqll = maxpq<ll>;
+using maxpqld = maxpq<ld>;
+using minpqll = minpq<ll>;
+using minpqld = minpq<ld>;
 
 #define lf "\n"
 #define sp " "
