@@ -156,6 +156,13 @@ template <typename T, typename... V> INLINE void _print(T t, V... v) {__print(t)
 #define GET2(a, b, c, ...) c
 #define GET3(a, b, c, d, ...) d
 
+#define EX(x) { cout << (x) << '\n'; exit(0); }
+#define A(a) (a).begin(), (a).end()
+#define MULT G(__panda_T) while(__panda_T--)
+#define YN(c) cout << ((c) ? "YES\n" : "NO\n");
+#define K first
+#define V second
+
 #define F3(x, start, stop, step) for (ll x = ll(start); x < ll(stop); x += ll(step))
 #define F2(x, start, stop) F3(x, start, stop, 1)
 #define F1(x, stop) F2(x, 0, stop)
@@ -215,6 +222,7 @@ template <typename T, typename... V> INLINE void INSr(vector<T> &c, V... v) { c.
 template <typename T, typename... V> INLINE void INSr(set<T> &c, V... v) { c.emplace(v...); }
 template <typename T, typename... V> INLINE void INSr(minpq<T> &c, V... v) { c.emplace(v...); }
 template <typename T, typename... V> INLINE void INSr(maxpq<T> &c, V... v) { c.emplace(v...); }
+template <typename TK, typename TV> INLINE void INSr(map<TK, TV> &c, TK k, TV v) { c.emplace(k, v); }
 template <typename T, typename... V> INLINE void INSr(frmap<T> &c, V... v) { c[{v...}]++; }
 #define INS(a...) INSr(a);
 
@@ -233,12 +241,61 @@ template <typename T, typename... V> INLINE void INSr(frmap<T> &c, V... v) { c[{
 #define MKMINPQ(dest, ax...) MKINSI(minpq, dest, ax)
 #define MKMAXPQ(dest, ax...) MKINSI(maxpq, dest, ax)
 
-#define EX(x) { cout << (x) << '\n'; exit(0); }
-#define A(a) (a).begin(), (a).end()
-#define MULT G(__panda_T) while(__panda_T--)
-#define YN(c) cout << ((c) ? "YES\n" : "NO\n");
-#define K first
-#define V second
+template <typename T> INLINE void GRPHf(T &grph, const set<pll> &eset) { for (auto &[x, y] : eset) { INS(grph[x], y) } }
+template <typename T> INLINE void GRPHf(const set<pll> &eset, T &grph) { GRPHf(grph, eset); }
+template <typename T> INLINE void GRPHf(T &grph, const set<pair<pll, ll>> &eset) { for (auto &[xy, w] : eset) { auto [x, y] = xy; INS(grph[x], y, w) } }
+template <typename T> INLINE void GRPHf(const set<pair<pll, ll>> &eset, T &grph) { GRPHf(grph, eset); }
+#define GRPH(a...) GRPHf(a);
+
+template <typename T> INLINE void WGRPHf(T &grph, const set<pair<pll, ll>> &eset) { GRPH(grph, eset) }
+template <typename T> INLINE void WGRPHf(const set<pair<pll, ll>> &eset, T &grph) { GRPH(grph, eset) }
+#define WGRPH(a...) WGRPHf(a);
+
+template <typename T> INLINE void DGRPHf(const ll n, T &grph) { F(PANDAID, n) { G(x) G(y) x--, y--; INS(grph[x], y) } }
+template <typename T> INLINE void DGRPHf(T &grph, const ll n) { DGRPHf(n, grph); }
+template <typename T> INLINE void DGRPHf(T &grph, const set<pll> &eset) { GRPH(grph, eset) }
+template <typename T> INLINE void DGRPHf(const set<pll> &eset, T &grph) { GRPH(grph, eset) }
+template <typename T> INLINE void DGRPHf(T &grph, const set<pair<pll, ll>> &eset) { GRPH(grph, eset) }
+template <typename T> INLINE void DGRPHf(const set<pair<pll, ll>> &eset, T &grph) { GRPH(grph, eset) }
+#define DGRPH(a...) DGRPHf(a);
+
+template <typename T> INLINE void UGRPHf(const ll n, T &grph) { F(PANDAID, n) { G(x) G(y) x--, y--; INS(grph[x], y) INS(grph[y], x) } }
+template <typename T> INLINE void UGRPHf(T &grph, const ll n) { UGRPHf(n, grph); }
+template <typename T> INLINE void UGRPHf(T &grph, const set<pll> &eset) { for (auto &[x, y] : eset) { INS(grph[x], y) INS(grph[y], x) } }
+template <typename T> INLINE void UGRPHf(const set<pll> &eset, T &grph) { UGRPHf(grph, eset); }
+template <typename T> INLINE void UGRPHf(T &grph, const set<pair<pll, ll>> &eset) { for (auto &[xy, w] : eset) { auto [x, y] = xy; INS(grph[x], y, w) INS(grph[y], x, w) } }
+template <typename T> INLINE void UGRPHf(const set<pair<pll, ll>> &eset, T &grph) { UGRPHf(grph, eset); }
+#define UGRPH(a...) UGRPHf(a);
+
+template <typename T> INLINE void DWGRPHf(const ll n, T &grph) { F(PANDAID, n) { G(x) G(y) G(w) x--, y--; INS(grph[x], y, w) } }
+template <typename T> INLINE void DWGRPHf(T &grph, const ll n) { DWGRPHf(n, grph); }
+template <typename T> INLINE void DWGRPHf(T &grph, const set<pair<pll, ll>> &eset) { GRPH(grph, eset) }
+template <typename T> INLINE void DWGRPHf(const set<pair<pll, ll>> &eset, T &grph) { GRPH(grph, eset) }
+#define DWGRPH(a...) DWGRPHf(a);
+
+template <typename T> INLINE void UWGRPHf(const ll n, T &grph) { F(PANDAID, n) { G(x) G(y) G(w) x--, y--; INS(grph[x], y, w) INS(grph[y], x, w) } }
+template <typename T> INLINE void UWGRPHf(T &grph, const ll n) { UWGRPHf(n, grph); }
+template <typename T> INLINE void UWGRPHf(T &grph, const set<pair<pll, ll>> &eset) { UGRPH(grph, eset) }
+template <typename T> INLINE void UWGRPHf(const set<pair<pll, ll>> &eset, T &grph) { UGRPH(grph, eset) }
+#define UWGRPH(a...) UWGRPHf(a);
+
+#define DESET(n, s) set<pll> s; F(PANDAID, n) { G(x) G(y) x--, y--; INS(s, x, y) }
+#define SESET(n, s) set<pll> s; F(PANDAID, n) { G(x) G(y) x--, y--; if (x > y) swap(x, y); INS(s, x, y) }
+#define UESET(n, s) set<pll> s; F(PANDAID, n) { G(x) G(y) x--, y--; INS(s, x, y) INS(s, y, x) }
+#define DWESET(n, s) set<pair<pll, ll>> s; F(PANDAID, n) { G(x) G(y) G(w) x--, y--; INS(s, pll {x, y}, w) }
+#define SWESET(n, s) set<pair<pll, ll>> s; F(PANDAID, n) { G(x) G(y) G(w) x--, y--; if (x > y) swap(x, y); INS(s, pll {x, y}, w) }
+#define UWESET(n, s) set<pair<pll, ll>> s; F(PANDAID, n) { G(x) G(y) G(w) x--, y--; INS(s, pll {x, y}, w) INS(s, pll {y, x}, w) }
+
+#define DGRPHL(n, a...) G(n) DGRPH(n, a)
+#define UGRPHL(n, a...) G(n) UGRPH(n, a)
+#define DWGRPHL(n, a...) G(n) DWGRPH(n, a)
+#define UWGRPHL(n, a...) G(n) UWGRPH(n, a)
+#define DESETL(n, a...) G(n) DESET(n, a)
+#define SESETL(n, a...) G(n) SESET(n, a)
+#define UESETL(n, a...) G(n) UESET(n, a)
+#define DWESETL(n, a...) G(n) DWESET(n, a)
+#define SWESETL(n, a...) G(n) SWESET(n, a)
+#define UWESETL(n, a...) G(n) UWESET(n, a)
 
 #define SIr(x, e, start, end, cond) auto x = (start), e = (end); while (x != e && !(cond)) ++x;
 #define SIi(x, start, end, cond) SIr(x, PANDAID, start, end, cond)
