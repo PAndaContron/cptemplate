@@ -256,9 +256,9 @@ template <typename T, typename... V> INLINE void INSr(frmap<T> &c, V... v) { c[{
 #define MKMINPQ(dest, ax...) MKINSI(minpq, dest, ax)
 #define MKMAXPQ(dest, ax...) MKINSI(maxpq, dest, ax)
 
-template <typename T> INLINE void GRPHf(T &grph, const set<pll> &eset) { for (auto &[x, y] : eset) { INS(grph[x], y) } }
+template <typename T> INLINE void GRPHf(T &grph, const set<pll> &eset) { FC(x, y, eset) { INS(grph[x], y) } }
 template <typename T> INLINE void GRPHf(const set<pll> &eset, T &grph) { GRPHf(grph, eset); }
-template <typename T> INLINE void GRPHf(T &grph, const set<pair<pll, ll>> &eset) { for (auto &[xy, w] : eset) { auto [x, y] = xy; INS(grph[x], y, w) } }
+template <typename T> INLINE void GRPHf(T &grph, const set<pair<pll, ll>> &eset) { FC(xy, w, eset) { auto [x, y] = xy; INS(grph[x], y, w) } }
 template <typename T> INLINE void GRPHf(const set<pair<pll, ll>> &eset, T &grph) { GRPHf(grph, eset); }
 #define GRPH(a...) GRPHf(a);
 
@@ -276,9 +276,9 @@ template <typename T> INLINE void DGRPHf(const set<pair<pll, ll>> &eset, T &grph
 
 template <typename T> INLINE void UGRPHf(const ll n, T &grph) { F(PANDAID, n) { G(x) G(y) x--, y--; INS(grph[x], y) INS(grph[y], x) } }
 template <typename T> INLINE void UGRPHf(T &grph, const ll n) { UGRPHf(n, grph); }
-template <typename T> INLINE void UGRPHf(T &grph, const set<pll> &eset) { for (auto &[x, y] : eset) { INS(grph[x], y) INS(grph[y], x) } }
+template <typename T> INLINE void UGRPHf(T &grph, const set<pll> &eset) { FC(x, y, eset) { INS(grph[x], y) INS(grph[y], x) } }
 template <typename T> INLINE void UGRPHf(const set<pll> &eset, T &grph) { UGRPHf(grph, eset); }
-template <typename T> INLINE void UGRPHf(T &grph, const set<pair<pll, ll>> &eset) { for (auto &[xy, w] : eset) { auto [x, y] = xy; INS(grph[x], y, w) INS(grph[y], x, w) } }
+template <typename T> INLINE void UGRPHf(T &grph, const set<pair<pll, ll>> &eset) { FC(xy, w, eset) { auto [x, y] = xy; INS(grph[x], y, w) INS(grph[y], x, w) } }
 template <typename T> INLINE void UGRPHf(const set<pair<pll, ll>> &eset, T &grph) { UGRPHf(grph, eset); }
 #define UGRPH(a...) UGRPHf(a);
 
