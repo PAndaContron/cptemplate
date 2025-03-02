@@ -8,6 +8,14 @@
 
 using namespace std;
 
+#ifndef typeof
+#define typeof __typeof__
+#endif
+
+#define CONCAT_IMPL( x, y ) x##y
+#define MACRO_CONCAT( x, y ) CONCAT_IMPL( x, y )
+#define PANDAID MACRO_CONCAT(__panda_, __COUNTER__)
+
 using i8 = int8_t;
 using i16 = int16_t;
 using i32 = int32_t;
@@ -48,11 +56,11 @@ using vvpld = vector<vpld>;
 using vs = vector<string>;
 using vvs = vector<vs>;
 
-template <typename T> using maxpq = priority_queue<T, vector<T>, less<T>>;
-template <typename T> using minpq = priority_queue<T, vector<T>, greater<T>>;
-using maxpqll = maxpq<ll>;
+template <typename T = ll> using frmap = map<T, ll>;
+
+template <typename T = ll> using maxpq = priority_queue<T, vector<T>, less<T>>;
+template <typename T = ll> using minpq = priority_queue<T, vector<T>, greater<T>>;
 using maxpqld = maxpq<ld>;
-using minpqll = minpq<ll>;
 using minpqld = minpq<ld>;
 
 #define VDEC(ty, vsz) using ty ## x ## vsz = ty __attribute__((vector_size(vsz * sizeof(ty))));
@@ -145,34 +153,103 @@ template <typename T, typename... V> INLINE void _print(T t, V... v) {__print(t)
 #define lf "\n"
 #define sp " "
 
-#define Gr(x) ll x; cin >> x;
+#define GET2(a, b, c, ...) c
+#define GET3(a, b, c, d, ...) d
+
+#define F3(x, start, stop, step) for (ll x = ll(start); x < ll(stop); x += ll(step))
+#define F2(x, start, stop) F3(x, start, stop, 1)
+#define F1(x, stop) F2(x, 0, stop)
+#define F(x, a...) GET3(a, F3, F2, F1)(x, a)
+
+// FRE iterates over the same values as F with the same args, just in reverse
+#define FRE3(x, start, stop, step) for (ll x = ll(stop) - 1 - abs(ll(stop) - 1 - ll(start)) % ll(step); x >= ll(start); x -= ll(step))
+#define FRE2(x, start, stop) for (ll x = ll(stop) - 1; x >= ll(start); x--)
+#define FRE1(x, stop) FRE2(x, 0, stop)
+#define FRE(x, a...) GET3(a, FRE3, FRE2, FRE1)(x, a)
+
+// FR copies python reverse range syntax, except step should always be positive
+// stop defaults to -1
+#define FR3(x, start, stop, step) for (ll x = ll(start); x > ll(stop); x -= ll(step))
+#define FR2(x, start, stop) FR3(x, start, stop, 1)
+#define FR1(x, start) FR2(x, start, -1)
+#define FR(x, a...) GET3(a, FR3, FR2, FR1)(x, a)
+
+#define FE(x, c) for (auto &x : (c))
+#define FC(x, c) for (const auto &x : (c))
+#define FER(x, c) FE(x, c | views::reverse)
+#define FCR(x, c) FC(x, c | views::reverse)
+
+#define GT(T, x) T x; cin >> x;
+#define Gr(x) GT(ll, x)
 #define G(x...) APPLY(Gr, x)
-#define GDr(x) ld x; cin >> x;
+#define GDr(x) GT(ld, x)
 #define GD(x...) APPLY(GDr, x)
-#define GSr(s) string s; cin >> s;
+#define GSr(s) GT(string, x)
 #define GS(s...) APPLY(GSr, s)
-#define GA(n, c) F(i, n) cin >> c[i];
-#define GC(n, c, add) F(i, n) { G(x) c.add(x); }
-#define GL(n, c) G(n) GA(n, c)
-#define GLC(n, c, add) G(n) GC(n, c, add)
-#define EX(x) { cout << x << '\n'; exit(0); }
+
+#define GAr(n, c, it) F(it, n) cin >> (c)[it];
+#define GA(n, c) GAr(n, c, PANDAID)
+
+#define GCa(n, c, add) F(PANDAID, n) { typeof(*(c).begin()) x; cin >> x; (c).add(x); }
+#define GPQ(n, c) F(PANDAID, n) { auto x = typeof((c).top()) {}; cin >> x; (c).push(x); }
+
+template <typename T> INLINE void GCcr(ll n, vector<T> &c) { GCa(n, c, push_back) }
+template <typename T> INLINE void GCcr(ll n, set<T> &c) { GCa(n, c, insert) }
+template <typename T> INLINE void GCcr(ll n, minpq<T> &c) { GPQ(n, c) }
+template <typename T> INLINE void GCcr(ll n, maxpq<T> &c) { GPQ(n, c) }
+template <typename T> INLINE void GCcr(ll n, frmap<T> &c) { F(i, n) { GT(T, x) c[x]++; } }
+template <typename T> INLINE void GCcr(ll n, T *c) { GA(n, c) }
+#define GCc(a...) GCcr(a);
+
+#define GC(n, a...) GET2(a, GCa, GCc)(n, a)
+#define GL(n, a...) G(n) GC(n, a)
+
+#define GV(n, v) vll v; GC(n, v)
+#define GVL(n, v) G(n) GV(n, v)
+
+#define GC2r(n, m, it, c) F(it, n) { GC(m, c[it]) }
+#define GC2(n, m, c) GC2r(n, m, PANDAID, c)
+#define GL2(n, m, c) G(n, m) GC2(n, m, c)
+
+template <typename T, typename... V> INLINE void INSr(vector<T> &c, V... v) { c.emplace_back(v...); }
+template <typename T, typename... V> INLINE void INSr(set<T> &c, V... v) { c.emplace(v...); }
+template <typename T, typename... V> INLINE void INSr(minpq<T> &c, V... v) { c.emplace(v...); }
+template <typename T, typename... V> INLINE void INSr(maxpq<T> &c, V... v) { c.emplace(v...); }
+template <typename T, typename... V> INLINE void INSr(frmap<T> &c, V... v) { c[{v...}]++; }
+#define INS(a...) INSr(a);
+
+#define INSIr(it, e, dest, start, end) for (auto it = (start), e = (end); it != e; ++it) INS((dest), *it)
+#define INSIi(dest, start, end) INSIr(PANDAID, PANDAID, dest, start, end)
+#define INSIc(dest, cont) INSIi(dest, (cont).cbegin(), (cont).cend())
+#define INSI(dest, ax...) GET2(ax, INSIi, INSIc)(dest, ax)
+
+#define MKINSIi(ty, dest, start, end) ty<typeof(typeof(*start) {})> dest; INSIi(dest, start, end)
+#define MKINSIc(ty, dest, cont) MKINSIi(ty, dest, (cont).cbegin(), (cont).cend())
+#define MKINSI(ty, dest, ax...) GET2(ax, MKINSIi, MKINSIc)(ty, dest, ax)
+
+#define FREQ(dest, ax...) MKINSI(frmap, dest, ax)
+#define MKSET(dest, ax...) MKINSI(set, dest, ax)
+#define MKVEC(dest, ax...) MKINSI(vector, dest, ax)
+#define MKMINPQ(dest, ax...) MKINSI(minpq, dest, ax)
+#define MKMAXPQ(dest, ax...) MKINSI(maxpq, dest, ax)
+
+#define EX(x) { cout << (x) << '\n'; exit(0); }
 #define A(a) (a).begin(), (a).end()
-#define MULT G(T) while(T--)
+#define MULT G(__panda_T) while(__panda_T--)
 #define YN(c) cout << ((c) ? "YES\n" : "NO\n");
 #define K first
 #define V second
 
-#define GET3(a, b, c, d, ...) d
-#define F3(x, start, stop, step) for (ll x = start; x < (ll)(stop); x += step)
-#define F2(x, start, stop) F3(x, start, stop, 1)
-#define F1(x, stop) F2(x, 0, stop)
-#define F(x, ...) GET3(__VA_ARGS__, F3, F2, F1)(x, __VA_ARGS__)
-#define FE(x, c) for (auto &x : c)
-#define FC(x, c) for (const auto &x : c)
+#define SIr(x, e, start, end, cond) auto x = (start), e = (end); while (x != e && !(cond)) ++x;
+#define SIi(x, start, end, cond) SIr(x, PANDAID, start, end, cond)
+#define SIc(x, cont, cond) SIi(x, (cont).cbegin(), (cont).cend(), cond)
+#define SI(x, a1, ax...) GET2(ax, SIi, SIc)(x, a1, ax)
 
-#define SI(x, start, end, cond) auto x = start, e = end; while (x != e && !(cond)) ++x;
-#define IBS(x, start, end, cond) ll s = start, x = end; while (x - s > 1) { \
+#define IBSr(x, s, start, end, cond) typeof(start) s = (start), x = (end); while (x - s > 1) { \
     ll mid = s + (x - s)/2; if (cond) x = mid; else s = mid; }
+// cond should be true on the RIGHT, expressed in terms of `mid`
+// x will be the smallest value that keeps cond true
+#define IBS(x, start, end, cond) IBSr(x, PANDAID, start, end, cond)
 
 #define CMA ,
 
