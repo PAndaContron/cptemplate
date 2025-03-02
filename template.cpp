@@ -147,7 +147,7 @@ template<typename T, typename V> INLINE void __print(const pair<T, V> &x) {cerr 
 template<typename T> INLINE void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? "," : ""), __print(i); cerr << "}";}
 INLINE void _print() {cerr << "]\n";}
 template <typename T, typename... V> INLINE void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
-#define D(x...) cerr << "[" << #x << "] = ["; _print(x);
+#define D(x...) { cerr << "[" << #x << "] = ["; _print(x); }
 #else
 #define D(x...)
 #endif
