@@ -60,7 +60,9 @@ template <typename T = ll> using frmap = map<T, ll>;
 
 template <typename T = ll> using maxpq = priority_queue<T, vector<T>, less<T>>;
 template <typename T = ll> using minpq = priority_queue<T, vector<T>, greater<T>>;
+using maxpqll = maxpq<>;
 using maxpqld = maxpq<ld>;
+using minpqll = minpq<>;
 using minpqld = minpq<ld>;
 
 #define VDEC(ty, vsz) using ty ## x ## vsz = ty __attribute__((vector_size(vsz * sizeof(ty))));
@@ -181,10 +183,20 @@ template <typename T, typename... V> INLINE void _print(T t, V... v) {__print(t)
 #define FR1(x, start) FR2(x, start, -1)
 #define FR(x, a...) GET3(a, FR3, FR2, FR1)(x, a)
 
-#define FE(x, c) for (auto &x : (c))
-#define FC(x, c) for (const auto &x : (c))
-#define FER(x, c) FE(x, c | views::reverse)
-#define FCR(x, c) FC(x, c | views::reverse)
+#define FE1(x, c) for (auto &x : (c))
+#define FC1(x, c) for (const auto &x : (c))
+#define FER1(x, c) FE1(x, (c) | views::reverse)
+#define FCR1(x, c) FC1(x, (c) | views::reverse)
+
+#define FE2(x, y, c) for (auto &[x, y] : (c))
+#define FC2(x, y, c) for (const auto &[x, y] : (c))
+#define FER2(x, y, c) FE2(x, y, (c) | views::reverse)
+#define FCR2(x, y, c) FC2(x, y, (c) | views::reverse)
+
+#define FE(a1, a...) GET2(a, FE2, FE1)(a1, a)
+#define FC(a1, a...) GET2(a, FC2, FC1)(a1, a)
+#define FER(a1, a...) GET2(a, FER2, FER1)(a1, a)
+#define FCR(a1, a...) GET2(a, FCR2, FCR1)(a1, a)
 
 #define GT(T, x) T x; cin >> x;
 #define Gr(x) GT(ll, x)
@@ -213,6 +225,9 @@ template <typename T> INLINE void GCcr(ll n, T *c) { GA(n, c) }
 
 #define GV(n, v) vll v; GC(n, v)
 #define GVL(n, v) G(n) GV(n, v)
+
+#define GF(n, f) frmap<> f; GC(n, f)
+#define GFL(n, f) G(n) GF(n, f)
 
 #define GC2r(n, m, it, c) F(it, n) { GC(m, c[it]) }
 #define GC2(n, m, c) GC2r(n, m, PANDAID, c)
